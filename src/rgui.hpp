@@ -113,14 +113,19 @@ namespace rgui {
 			return !(ret);
 		}
 
-		namespace config::bg {
-			void alpha(RGUIwindow window, float alpha) {
-				window.bg.alpha = alpha;
-				glClearColor(window.bg.red, window.bg.green, window.bg.blue, window.bg.alpha);
+		namespace config {
+			void overridedecoration() {
+				glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
 			}
-			void rgba(RGUIwindow window, rgba color) {
-				window.bg = color;
-				glClearColor(window.bg.red, window.bg.green, window.bg.blue, window.bg.alpha);
+			namespace bg {
+				void alpha(RGUIwindow window, float alpha) {
+					window.bg.alpha = alpha;
+					glClearColor(window.bg.red, window.bg.green, window.bg.blue, window.bg.alpha);
+				}
+				void rgba(RGUIwindow window, rgba color) {
+					window.bg = color;
+					glClearColor(window.bg.red, window.bg.green, window.bg.blue, window.bg.alpha);
+				}
 			}
 		}
 	}
