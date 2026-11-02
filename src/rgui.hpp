@@ -193,5 +193,60 @@ namespace rgui {
 
 }
 
+namespace cursor {
+	void cursorpos(RGUIwindow window, double* x, double* y) {
+		double curx, cury;
+		glfwGetCursorPos(window.handle, &curx, &cury);
+		*x = curx;
+		*y = cury;
+	}
+
+	int mousedown(RGUIwindow window) {
+		if (glfwGetMouseButton(window.handle, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) return 1;
+		else return 0;
+	}
+
+	int rightmousedown(RGUIwindow window) {
+		if (glfwGetMouseButton(window.handle, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS) return 1;
+		else return 0;
+	}
+
+	int clickarea(RGUIwindow window, int x, int y, int width, int height) {
+		double curx, cury;
+		cursor::cursorpos(window, &curx, &cury);
+		if (curx < x - (width / 2.0f)) {
+			return 0;
+		} else if (curx > x + (width / 2.0f)) {
+			return 0;
+		} else if (cury < y - (height / 2.0f)) {
+			return 0;
+		} else if (cury > y + (height / 2.0f)) {
+			return 0;
+		} else if (cursor::mousedown(window)) {
+			return 1;
+		} else {
+			return 0;
+		}
+	}
+
+	int rightclickarea(RGUIwindow window, int x, int y, int width, int height) {
+		double curx, cury;
+		cursor::cursorpos(window, &curx, &cury);
+		if (curx < x - (width / 2.0f)) {
+			return 0;
+		} else if (curx > x + (width / 2.0f)) {
+			return 0;
+		} else if (cury < y - (height / 2.0f)) {
+			return 0;
+		} else if (cury > y + (height / 2.0f)) {
+			return 0;
+		} else if (cursor::rightmousedown(window)) {
+			return 1;
+		} else {
+			return 0;
+		}
+	}
+}
+
 #endif
 
