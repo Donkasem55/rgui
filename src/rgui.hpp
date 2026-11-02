@@ -161,6 +161,8 @@ namespace rgui {
 		}
 	}
 
+	// This is a cruel world.
+
 	void mainloop(RGUIwindow window) {
 		glfwPollEvents();
 		glfwSwapBuffers(window.handle);
