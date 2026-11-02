@@ -113,6 +113,12 @@ namespace rgui {
 			return !(ret);
 		}
 
+		void setappid(const char* appid) {
+			glfwWindowHintString(GLFW_X11_CLASS_NAME, appid);
+			glfwWindowHintString(GLFW_X11_INSTANCE_NAME, appid);
+			glfwWindowHintString(GLFW_WAYLAND_APP_ID, appid);
+		}
+
 		namespace config {
 			void overridedecoration() {
 				glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
