@@ -45,6 +45,28 @@ namespace color {
 		};
 		return new_rgba;
 	}
+
+	namespace gradient {
+		void rectRGBA(const rgba& input1, const rgba& input2, rgba* addr) {
+			addr[0] = input1;
+			addr[1] = input1;
+			addr[2] = input2;
+			addr[3] = input2;
+		}
+
+		void rectRGBA_45(const rgba& input1, const rgba& input2, rgba* addr) {
+			addr[0] = input1;
+			rgba midway{
+				(input1.red + input2.red) / 2.0f,
+				(input1.green + input2.green) / 2.0f,
+				(input1.blue + input2.blue) / 2.0f,
+				(input1.alpha + input2.alpha) / 2.0f
+			};
+			addr[1] = midway;
+			addr[2] = midway;
+			addr[3] = input2;
+		}
+	}
 }
 
 namespace rgui {
@@ -104,15 +126,38 @@ namespace rgui {
 	}
 
 	namespace rect {
-		void rgba(float x, float y, float w, float h, rgba color = rgba{}) {
+		void rgba(float x, float y, float w, float h, rgba color = rgba{}, float angle = 0.0f) {
 			glColor4f(color.red, color.green, color.blue, color.alpha);
+			glTranslatef(x, y, 0.0f);
+			glRotatef(angle, 0.0f, 0.0f, 1.0f);
 			glBegin(GL_QUADS);
-			glVertex2f(x, y);
-			glVertex2f(x+w, y);
-			glVertex2f(x+w, y+h);
-			glVertex2f(x, y+h);
+			glVertex2f(-w/2.0f, -h/2.0f);
+			glVertex2f(w/2.0f, -h/2.0f);
+			glVertex2f(w/2.0f, h/2.0f);
+			glVertex2f(-w/2.0f, h/2.0f);
 			glEnd();
 			glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+			glRotatef(0.0f - angle, 0.0f, 0.0f, 1.0f);
+			glTranslatef(0.0f - x, 0.0f - y, 0.0f);
+		}
+
+		void rgba_grad(float x, float y, float w, float h, ::rgba color[4], float angle = 0.0f) {
+			glDisable(GL_TEXTURE_2D);
+			glColor4f(color[0].red, color[0].green, color[0].blue, color[0].alpha);
+			glTranslatef(x, y, 0.0f);
+			glRotatef(angle, 0.0f, 0.0f, 1.0f);
+			glBegin(GL_QUADS);
+			glVertex2f(-w/2.0f, -h/2.0f);
+			glColor4f(color[1].red, color[1].green, color[1].blue, color[1].alpha);
+			glVertex2f(w/2.0f, -h/2.0f);
+			glColor4f(color[2].red, color[2].green, color[2].blue, color[2].alpha);
+			glVertex2f(w/2.0f, h/2.0f);
+			glColor4f(color[3].red, color[3].green, color[3].blue, color[3].alpha);
+			glVertex2f(-w/2.0f, h/2.0f);
+			glEnd();
+			glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+			glRotatef(0.0f - angle, 0.0f, 0.0f, 1.0f);
+			glTranslatef(0.0f - x, 0.0f - y, 0.0f);
 		}
 	}
 
